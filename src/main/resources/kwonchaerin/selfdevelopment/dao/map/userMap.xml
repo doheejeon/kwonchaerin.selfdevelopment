@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EX'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='kwonchaerin.selfdevelopment.dao.map.UserMap'>
+	<select id='selectUsers' resultType='user'>
+		select * from users
+		order by user_code desc
+	</select>
+	
+	<select id='selectRankers' resultType='user'>
+		select user_code, nickname, user_level from users
+		where position = 'PLAYER'
+		order by user_level
+	</select>
+	
+	<select id='selectUser' resultMap='userMap'>
+		select * from users
+		where user_id = #{usrId}
+	</select>
+	
+	<resultMap id ="userMap" type="user">
+      <id     property="usrCode" 		column="user_code"/>
+      <result property="position" 		column="position"/>
+      <result property="usrId" 			column="user_id"/>
+      <result property="usrPw" 			column="password"/>
+      <result property="usrName" 		column="user_name"/>
+      <result property="nickname" 		column="nickname"/>
+      <result property="birthday" 		column="birthday"/>
+      <result property="phoneNum" 		column="phone_num"/>
+      <result property="usrLv" 			column="user_level"/>
+      <result property="gold" 			column="gold"/>
+      <result property="regDate" 		column="reg_date"/>
+   </resultMap>
+   
+	<insert id='insertUser'>
+		insert into users(user_code, position, user_id, password, user_name, nickname, birthday, phone_num, user_level, gold, reg_date)
+        values(usrs_usrcode_seq.nextval, #{position}, #{usrId}, #{password}, #{usrName}, #{nickname}, #{birthday}, #{phoneNum}, 99.99, 99999, sysdate)
+	</insert>
+	
+	<update id='updateUser'>
+		update users
+		set position = #{position}, usrPw = #{password}, nickname = #{nickname}, phone_num = #{phoneNum}
+		where user_code = #{usrCode}
+	</update>
+	
+	<update id='patchUser'>
+		update users
+		set position = #{position}, user_level = #{usrLv}, gold = #{gold}
+		where user_code = #{usrCode}
+	</update>
+	
+	<delete id='deleteUser'>
+		delete users
+		where user_code = #{usrCode}
+	</delete>
+</mapper>

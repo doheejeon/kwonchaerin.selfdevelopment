@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EX'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='kwonchaerin.selfdevelopment.dao.map.QuestMap'>
+	<select id='selectQuests' resultType='quest'>
+		select * from quests
+		order by quest_name
+	</select>
+	
+	<select id='selectQuest' resultMap='questMap'>
+		select * from quests
+		where quest_id = #{qstId}
+	</select>
+	
+	<select id='selectQuestCategory' resultMap='questMap'>
+		select q.quest_id, q.class_id, q.quest_name, q.difficulty, q.quest_content
+		from quests q join classes c
+		on q.class_id = c.class_id
+		where c.main_category = #{clsNameTop} 
+	</select>
+	
+	<select id='selectQuestDifficulty' resultMap='questMap'>
+		select * from quests
+		where difficulty = ${difficulty}
+	</select>
+	
+	<select id='selectQuestName' resultMap='questMap'>
+		select * from quests 
+		where quest_name like '%#{qstName}%'
+	</select>
+	<resultMap id ="questMap" type="quest">
+      <id     property="qstId" 		column="quest_id"/>
+      <result property="clsId"		column="class_id"/>
+      <result property="qstName" 	column="quest_name"/>
+      <result property="difficulty" column="difficulty"/>
+      <result property="qstContent" column="quest_content"/>
+      <result property="imgId"		column="image_id"/>
+   </resultMap>
+	
+	<insert id='insertQuest'>
+		insert into quests(quest_id, quest_name, difficulty, quest_content)
+        values(qsts_qstcId_seq.nextval, #{qstName}, #{difficulty}, #{qstContent})
+	</insert>
+	
+	<update id='updateQuest'>
+		update quests
+		set quest_name = #{qstName}, difficulty = #{difficulty}, quest_content = #{qstContent}
+		where quest_id = #{qstId}
+	</update>
+	
+	<delete id='deleteQuest'>
+		delete quests
+		where quest_id = #{qstId}
+	</delete>
+</mapper>

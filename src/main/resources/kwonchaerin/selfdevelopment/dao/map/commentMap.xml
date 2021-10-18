@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EX'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='kwonchaerin.selfdevelopment.dao.map.CommentMap'>
+	<select id='selectComment' resultMap='commentMap'>
+		select * from comments
+		where comment_id = #{cmtId}
+	</select>
+	
+	<select id='selectComments' resultMap='commentMap'>
+		select * from comments
+		where post_id = #{postId}
+		order by comment_id desc
+	</select>
+	
+	<!-- from users or from comments ??? -->
+	<select id='selectUserComments' resultMap='commentMap'>
+		select * from users 
+		where user_code = #{usrCode}
+	</select>
+	
+	<resultMap id ="commentMap" type="comment">
+      <id     property="cmtId" 		column="comment_id"/>
+      <result property="postId"     column="post_id"/>
+      <result property="usrCode" 	column="user_code"/>
+      <result property="cmtText"	column="comment_text"/> 
+   </resultMap>
+	
+	<insert id='insertComment'>
+		insert into comments(comment_id, user_code, post_id, comment_text)
+        values(cmts_cmtid_seq.nextval, #{postId}, #{usrCode}, #{cmtText})
+	</insert>
+	
+	<update id='updateComment'>
+		update comments
+		where comment_id = #{cmtId}
+	</update>
+	
+	<delete id='deleteComment'>
+		delete comments
+		where comment_id = #{cmtId}
+	</delete>
+</mapper>

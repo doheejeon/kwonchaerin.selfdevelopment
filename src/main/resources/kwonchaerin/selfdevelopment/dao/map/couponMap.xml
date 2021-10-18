@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EX'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='kwonchaerin.selfdevelopment.dao.map.CouponMap'>
+	<select id='selectCoupons' resultType='coupon'>
+		select * from coupons
+		order by coupon_code desc
+	</select>
+	
+	<select id='selectCoupon' resultMap='couponMap'>
+		select * from coupons
+		where coupon_code = #{cpnCode}
+	</select>
+	
+	<resultMap id ="couponMap" type="coupon">
+      <id     property="cpnCode" 		column="coupon_code"/>
+      <result property="usrCode" 		column="user_code"/>
+      <result property="availability" 	column="availability"/>
+      <result property="store" 			column="store"/>
+      <result property="dcPer" 			column="dc_percent"/>
+      <result property="imgId" 			column="image_id"/>
+   	</resultMap>
+   
+   	<insert id='insertCoupon'>
+   		insert into coupons(coupon_code, user_code, availability, store, dc_percent, imgId)
+        values(cpns_cpncode_seq.nextval, #{usrCode}, #{availability}, #{store}, #{dc_per}, #{image_id})
+   	</insert>
+	
+	<update id='updateCoupon'>
+		update coupons
+		set availability = #{availability}
+		where coupon_code = #{cpnCode}
+	</update>
+	
+	<delete id='deleteCoupon'>
+		delete coupons
+		where coupon_code = #{cpnCode}
+	</delete>
+</mapper>

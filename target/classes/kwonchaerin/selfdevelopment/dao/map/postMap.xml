@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EX'
+	'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='kwonchaerin.selfdevelopment.dao.map.PostMap'>
+	<select id='selectPosts' resultType='post'>
+		select * from posts
+		order by post_id desc
+	</select>
+	
+	<select id='selectPost' resultMap='postMap'>
+		select * from posts
+		where post_id = #{pstId}
+	</select>
+	
+	<resultMap id ="postMap" type="post">
+      <id     property="pstId" 			column="post_id"/>
+      <result property="usrCode" 		column="user_code"/>
+      <result property="pstHead" 		column="head"/>
+      <result property="pstWriteDate" 	column="write_date"/>
+      <result property="pstTitle" 		column="title"/>
+      <result property="pstContent" 	column="post_content"/>
+   </resultMap>
+	
+	<insert id='insertPost'>
+		insert into posts(post_id, user_code, head, write_date, title, post_content)
+        values(psts_pstid_seq.nextval, #{usrCode}, #{pstHead}, sysdate, #{pstTitle}, #{pstContent})
+	</insert>
+	
+	<update id='updatePost'>
+		update posts
+		set head = #{pstHead}, title = #{pstTitle}, post_content = #{pstContent}
+		where post_id = #{pstId}
+	</update>
+	
+	<delete id='deletePost'>
+		delete posts
+		where post_id = #{pstId}
+	</delete>
+</mapper>
